@@ -3,22 +3,17 @@ const {
   GraphQLString,
   GraphQLSchema,
 } = require('graphql');
+const _ = require('lodash');
 
-  // hardcoded data/array
-// const books = [
-//   {
-//     id: '1',
-//     name: 'HAHA',
-//     genre: 'horror',
-//   },
-//   {
-//     id: '2',
-//     name: 'HAHAha',
-//     genre: 'mystery',
-//   },
-// ];
+// Dummy Data
+const books = [
+  { name: 'Gone With The Wind', genre: 'Drama', id: '1' },
+  { name: 'The Final Empire', genre: 'Fantasy', id: '2' },
+  { name: 'The Flat Liners', genre: 'Drama', id: '3' },
+];
 
-  // Book Type
+// Best Practice: define the type and set the relationship and define Root Query
+// Book Type
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
@@ -36,12 +31,7 @@ const RootQuery = new GraphQLObjectType({
       type: BookType,
       args: { id: { type: GraphQLString } },
       resolve(parent, args) {
-        // code to get data from db / other source
-        // for (let i = 0; i < books.length; i++) {
-        //   if (books[i].id == args.id) {
-        //     return books[i];
-        //   }
-        // }
+        /* // code to get data from db/ other source */
       },
     },
   },
