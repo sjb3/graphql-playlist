@@ -8,8 +8,8 @@ const {
   GraphQLInt,
   GraphQLList,
 } = require('graphql');
-const _ = require('lodash');
-// const Book = require('../models/book');
+// const _ = require('lodash');
+const Book = require('../models/book');
 const Author = require('../models/author');
 
 // Dummy Data =. should be updated with mongoDB or postgrsql
@@ -51,8 +51,7 @@ const BookType = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args) {
-        // console.log(parent);
-        // return _.find(authors, { id: parent.authorId });
+        return Author.findById(parent.authorid);
       },
     },
   }),
@@ -68,7 +67,7 @@ const AuthorType = new GraphQLObjectType({
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
-        // return _.filter(books, { authorId: parent.id });
+        return Book.find({ authorid: parent.id });
       },
     },
   }),
@@ -81,30 +80,26 @@ const RootQuery = new GraphQLObjectType({
       type: BookType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        /* // code to get data from db/ other source */
-        // console.log(typeof (args.id));
-        // return _.find(books, { id: args.id });
+        return Book.findById(args.id);
       },
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        /* // code to get data from db/ other source */
-        // consol e.log(typeof (args.id));
-        // return _.find(authors, { id: args.id });
+        return Author.findById(args.id);
       },
     },
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
-        // return books;
+        return Book.find();
       },
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
-        // return authors;
+        return Author.find();
       },
     },
   },
@@ -112,7 +107,7 @@ const RootQuery = new GraphQLObjectType({
 
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
-  field: {
+  fields: {
     addAuthor: {
       type: AuthorType,
       args: {
@@ -125,6 +120,22 @@ const Mutation = new GraphQLObjectType({
           age: args.age,
         });
         return author.save();// now save to the mongodb
+      },
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        authorid: { type: GraphQLID },
+      },
+      resolve(parent, args) {
+        const book = new Book({
+          name: args.name,
+          genre: args.genre,
+          authorid: args.authorid,
+        });
+        return book.save();// now save to the mongodb
       },
     },
   },
