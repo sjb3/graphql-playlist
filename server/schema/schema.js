@@ -7,40 +7,12 @@ const {
   GraphQLID,
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull,
 } = require('graphql');
 // const _ = require('lodash');
 const Book = require('../models/book');
 const Author = require('../models/author');
 
-// Dummy Data =. should be updated with mongoDB or postgrsql
-// const books = [
-//   {
-//     name: 'Gone With The Wind', genre: 'Drama', id: '1', authorId: '1',
-//   },
-//   {
-//     name: 'The Final Empire', genre: 'Fantasy', id: '2', authorId: '2',
-//   },
-//   {
-//     name: 'The Flat Liners', genre: 'Drama', id: '3', authorId: '3',
-//   },
-//   {
-//     name: 'The Hero Of Ages', genre: 'SciFi', id: '4', authorId: '2',
-//   },
-//   {
-//     name: 'The Color Of Magic', genre: 'Drama', id: '5', authorId: '3',
-//   },
-//   {
-//     name: 'The Light Fantastic', genre: 'SciFi', id: '6', authorId: '3',
-//   },
-// ];
-
-// const authors = [
-//   { name: 'Patric Momo', age: 22, id: '1' },
-//   { name: 'Brandon Sasa', age: 33, id: '2' },
-//   { name: 'Terry Roberts', age: 44, id: '3' },
-// ];
-
-// Best Practice: define the type and set the relationship and define Root Query
 // Book Type
 const BookType = new GraphQLObjectType({
   name: 'Book',
@@ -111,8 +83,8 @@ const Mutation = new GraphQLObjectType({
     addAuthor: {
       type: AuthorType,
       args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve(parent, args) {
         const author = new Author({
@@ -125,9 +97,9 @@ const Mutation = new GraphQLObjectType({
     addBook: {
       type: BookType,
       args: {
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        authorid: { type: GraphQLID },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        authorid: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
         const book = new Book({
