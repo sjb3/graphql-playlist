@@ -12,13 +12,18 @@ export const Button = styled.button`
   /* background: ${props => props.primary ? 'palevioletred' : 'white'};
   color: ${props => props.primary ? 'white' : 'palevioletred'}; */
 
-  font-size: 0.75em;
+  font-size: 0.6em;
   font-family: 'Cute Font', cursive;
   margin: 1em;
-  padding: 0.25em 0.35em;
-  border: 0.5px solid #f4f113;
-  border-radius: 3px;
+  padding: 0 10px;
+  border: 0 #f4f113;
+  border-radius: 50%;
   background-color: #eaf2f1;
+  cursor: pointer;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+
   &:hover {
     color: #87f413;
     border: 3px solid #87f413;
